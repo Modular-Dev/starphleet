@@ -24,7 +24,7 @@ DO_WE_HAVE_THE_LKG=$(lxc-ls | grep "^${LAST_KNOWN_GOOD_CONTAINER}$" || true)
 # LKG and that we do indeed HAVE the LKG
 if [ "${name}" == "${LAST_KNOWN_GOOD_CONTAINER}" -a "${name}" == "${DO_WE_HAVE_THE_LKG}" ]; then
   warn "using existing container ${name}"
-  lxc-start --name ${name} -d
+  lxc-start --name ${name} --logpriority=TRACE -d
   starphleet-lxc-wait ${name} RUNNING
   lxc-attach --name ${name} -- bash starphleet-wait-network
   if dev_mode && [ -n "${DEVMODE_UNBIND_GIT_DIR}" ]; then

@@ -106,7 +106,7 @@ else
   chmod +x "${CONTAINER_OVERLAY}/build_script"
 
   #start up the container, waiting for the network, and then run the container build script
-  lxc-start --name ${CONTAINER_NAME} -d
+  lxc-start --name ${CONTAINER_NAME} --logpriority=TRACE -d
   starphleet-lxc-wait ${CONTAINER_NAME} RUNNING
   lxc-attach --name ${CONTAINER_NAME} -- bash starphleet-wait-network
   #host file updates

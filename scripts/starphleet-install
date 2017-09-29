@@ -81,6 +81,10 @@ apt-get dist-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::=
 
 apt-get -y install --force-yes $(< "${DIR}/packages")
 
+# temporary workaround - dependency on lxc v1.0.8
+pushd "${DIR}/../dependencies/lxc"
+  ./autogen.sh && ./configure && make && make install
+popd
 
 #put in the system overlay, gets all the files in place
 #for the starphleet jobs
