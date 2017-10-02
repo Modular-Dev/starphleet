@@ -2,7 +2,7 @@
 # TODO: All the paths need to change on final
 ## TO USE THIS SCRIPT PASTE THE FOLLOWING INTO THE TERMINAL:
 
-# bash -c "$(curl -s https://raw.githubusercontent.com/wballard/starphleet/master/webinstall)"
+# bash -c "$(curl -s https://raw.githubusercontent.com/Modular-Dev/starphleet/master/webinstall)"
 
 ##############################################################################
 ## Author:          Benjamin Hudgens
@@ -12,7 +12,7 @@
 ##
 ##############################################################################
 ## Locations to this repo
-STARPHLEET_REPO=${STARPHLEET_REPO:-"https://github.com/wballard/starphleet.git"}
+STARPHLEET_REPO=${STARPHLEET_REPO:-"https://github.com/Modular-Dev/starphleet.git"}
 STARPHLEET_BRANCH=${STARPHLEET_BRANCH:-master}
 
 ##############################################################################
@@ -21,8 +21,11 @@ STARPHLEET_BRANCH=${STARPHLEET_BRANCH:-master}
 
 [ -n "${HEADQUARTERS_URL}" ] || read -p "Please paste the SSH git URL to your headquarters:  " HEADQUARTERS_URL
 
-# We're gonna need git
-apt-get install -y git
+# Run Upgrade before before installing packages - which fixes this error
+# https://github.com/lxc/lxc/issues/247
+sudo add-apt-repository ppa:ubuntu-lxc/lxc-lts -y
+sudo sed -i -e 's/us-east-1.ec2.archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+apt-get update --fix-missing -y && apt-get install -y git
 # Now grab this repo
 git clone -b "${STARPHLEET_BRANCH}" "${STARPHLEET_REPO}"
 # Head into scripts

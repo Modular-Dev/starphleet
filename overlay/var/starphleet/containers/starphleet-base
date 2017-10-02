@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo apt-get -y update
+sudo apt-get -y update --fix-missing
 sudo apt-get install -y --force-yes $(cat << FFF
 autoconf
 awscli

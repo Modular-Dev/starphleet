@@ -4,9 +4,25 @@
 ###
 ### Wait until it is obvious there is an address lease.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${DIR}/tools
 #need to wait until the network is up
-echo waiting for network
-until ifconfig | grep 'inet addr' | grep --invert '127.0.0.1' > /dev/null
+check_network() {
+  name=$1
+  info "waiting for network : ${name}"
+  lxc-attach --name ${name} -- bash -c ifconfig | grep 'inet addr' | grep --invert '127.0.0.1'
+}
+NETWORK_IS_UP=$(check_network ${1})
+until [ ! -z "$NETWORK_IS_UP" ]
 do
+  # we're going to give it a good solid effort and just give up
+  ((c++)) && ((c==5)) && break
   sleep 0.1
 done
+
+# let us know we have a valid network address
+if [ ! -z "$NETWORK_IS_UP" ]
+then
+  info "NETWORK_IS_UP::: ${NETWORK_IS_UP}"
+else
+  trace "failed to get valid network address"
+fi
