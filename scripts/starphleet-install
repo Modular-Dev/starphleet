@@ -81,6 +81,16 @@ apt-get dist-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::=
 
 apt-get -y install --force-yes $(< "${DIR}/packages")
 
+# temporary workaround - dependency on lxc v1.0.8
+git clone https://github.com/lxc/lxc.git "${DIR}/lxc"
+pushd "${DIR}/lxc"
+  git checkout stable-1.0
+  ./autogen.sh && ./configure && make && make install
+popd
+rm -rf "${DIR}/lxc"
+
+# make sure that distro is looking in /usr/local/lib/python3 for python modules. 
+export PATH=${PATH}:/usr/local/lib/python3
 
 #put in the system overlay, gets all the files in place
 #for the starphleet jobs
