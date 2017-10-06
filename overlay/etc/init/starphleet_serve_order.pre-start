@@ -26,7 +26,7 @@ if [ "${name}" == "${LAST_KNOWN_GOOD_CONTAINER}" -a "${name}" == "${DO_WE_HAVE_T
   warn "using existing container ${name}"
   lxc-start --name ${name} -d
   starphleet-lxc-wait ${name} RUNNING
-  lxc-attach --name ${name} -- bash starphleet-wait-network
+  starphleet-wait-network ${name}
   if dev_mode && [ -n "${DEVMODE_UNBIND_GIT_DIR}" ]; then
     lxc-attach --name ${name} -- sudo -H -u ${STARPHLEET_APP_USER} bash -c "rsync -rlKt '${ORDER_LOCAL}/' '/home/ubuntu/app/'"
     lxc-attach --name ${name} -- sudo -H -u ${STARPHLEET_APP_USER} bash -c "[ -f '${DEVMODE_BUILD_CACHE}' ] && rsync -rav --exclude-from='${DEVMODE_BUILD_CACHE}' --delete '${ORDER_LOCAL}/' '/home/ubuntu/app/'"
@@ -35,9 +35,11 @@ else
   warn "creating a new container"
   #starting up the build
   echo 'building' > "${STATUS_FILE}"
+  trace "destroying container starphleet-lxc-destroy ${name}"
   starphleet-lxc-destroy "${name}"
   #build a container, this will recycle any existing container, only building
   #when things are 'new', with a default for said URL to be nothing
+  trace "starphleet-containerize ${SERVICE_GIT_URL:--} ${name} ${HEADQUARTERS_LOCAL}/${order}"
   starphleet-containerize "${SERVICE_GIT_URL:--}" "${name}" "${HEADQUARTERS_LOCAL}/${order}" \
   || (echo 'building failed' > "${STATUS_FILE}" && exit 1)
 fi

@@ -6,7 +6,7 @@ die() { echo $1 ; exit ${2-1} ;}
 
 #Library of colorized logging functions, just source this
 function error() {
-  echo -e  '\E[31m'"$(date +"%x %X - ")\033[1m$*\033[0m"
+  echo -e  '\E[31m'"$(date +"%x %X - ERROR::")\033[1m$*\033[0m"
 }
 
 function announce() {
@@ -14,20 +14,20 @@ function announce() {
 }
 
 function fatal() {
-  echo -e  '\E[31m'"$(date +"%x %X - ")\033[1m$*\033[0m"
+  echo -e  '\E[31m'"$(date +"%x %X - FATAL::")\033[1m$*\033[0m"
   exit 1
 }
 
 function trace() {
-  >&2 echo -e  '\E[35m'"$(date +"%x %X - ")\033[1m$*\033[0m"
+  >&2 echo -e  '\E[35m'"$(date +"%x %X - TRACE::")\033[1m$*\033[0m"
 }
 
 function info() {
-  echo -e  '\E[32m'"$(date +"%x %X - ")\033[1m$*\033[0m"
+  echo -e  '\E[32m'"$(date +"%x %X - INFO::")\033[1m$*\033[0m"
 }
 
 function warn() {
-  echo -e  '\E[33m'"$(date +"%x %X - ")\033[1m$*\033[0m"
+  echo -e  '\E[33m'"$(date +"%x %X - WARN::")\033[1m$*\033[0m"
 }
 
 function log() {
