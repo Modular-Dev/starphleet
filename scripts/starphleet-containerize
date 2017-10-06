@@ -31,6 +31,8 @@ ORDERS="${orders_dir}/orders"
 #the second most important thing is to know that this runs on the container
 CONTAINER_BUILD_SCRIPT=${STARPHLEET_TMP}/${container_name}.build
 
+trace "CONTAINER_BUILD_SCRIPT:: ${CONTAINER_BUILD_SCRIPT}"
+
 #This *really needs* to be unescaped, need to get HOME from the point of view
 #of the container
 cat << 'EOF' > ${CONTAINER_BUILD_SCRIPT}
